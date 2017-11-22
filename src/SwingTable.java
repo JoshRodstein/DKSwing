@@ -11,7 +11,8 @@ public class SwingTable {
 
     public SwingTable(File swingData) throws FileNotFoundException{
         scan = new Scanner(swingData);
-
+        int rowNum = 0;
+        swingSamples = new ArrayList<SwingSample>();
         while(scan.hasNextLine()){
             String[] row = scan.nextLine().split(",");
             sample = new SwingSample(
@@ -22,9 +23,12 @@ public class SwingTable {
                     Double.parseDouble(row[4]),
                     Double.parseDouble(row[5]),
                     Double.parseDouble(row[6]));
+            System.out.println(sample.getTimestamp());
             swingSamples.add(sample);
             indexMap.put(sample.getTimestamp(), swingSamples.size()-1);
         }
+        rowNum++;
+        System.out.println("row: " + rowNum);
     }
 
 
@@ -34,7 +38,29 @@ public class SwingTable {
     * */
     public int searchContinuityAboveValue(String data, int indexBegin, int indexEnd,
                                           double threshold, int winLength){
-        return 0;
+        String column = data;
+        int begin = indexBegin;
+        int end = indexEnd;
+        int winL = winLength;
+        double value = 0;
+        double thresh = threshold;
+        int foundIndex = -1;
+
+        for(int i = begin; i <= end; i++){
+            swingSamples.get(i).getXYZ(column);
+            if(value > thresh) {
+              if(foundIndex == -1){
+                  foundIndex = i;
+              }
+            } else {
+                if(i - foundIndex >= winLength){
+                    return foundIndex;
+                }
+                foundIndex = -1;
+            }
+        }
+
+        return foundIndex;
     }
 
     /*
@@ -44,7 +70,32 @@ public class SwingTable {
     * */
     public int backSearchContinuityWithinRange(String data, int indexBegin, int indexEnd,
                                                double thresholdLo, double thresholdHi, int winLength){
-        return 0;
+        String column = data;
+        int begin = indexBegin;
+        int end = indexEnd;
+        int winL = winLength;
+        double value = 0;
+        double threshLo = thresholdLo;
+        double threshHi = thresholdHi;
+        int foundIndex = -1;
+
+
+        for(int i = begin; i <= end; i++){
+            value = swingSamples.get(i).getXYZ(column);
+            if(value > threshLo && value < threshHi) {
+                if(foundIndex == -1){
+                    foundIndex = i;
+                }
+            } else {
+                if(i - foundIndex >= winLength){
+                    return foundIndex;
+                }
+                foundIndex = -1;
+            }
+        }
+
+        return foundIndex;
+
     }
 
     /*
@@ -65,6 +116,19 @@ public class SwingTable {
     public int searchMultiContinuityWithinRange(String data, int indexBegin, int indexEnd,
                                                 double thresholdLo, double thresholdHi, int winLength){
         return 0;
+    }
+
+    public void printSwing(){
+        for(int i = 0; i < swingSamples.size(); i++){
+            System.out.println();
+            System.out.print(swingSamples.get(i).getTimestamp());
+            System.out.print(", " + swingSamples.get(i).getXYZ("ax"));
+            System.out.print(", " + swingSamples.get(i).getXYZ("ay"));
+            System.out.print(", " + swingSamples.get(i).getXYZ("az"));
+            System.out.print(", " + swingSamples.get(i).getXYZ("wx"));
+            System.out.print(", " + swingSamples.get(i).getXYZ("wy"));
+            System.out.print(", " + swingSamples.get(i).getXYZ("wz"));
+        }
     }
 
 

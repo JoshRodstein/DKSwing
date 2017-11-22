@@ -1,16 +1,16 @@
 import java.io.*;
 
 public class DKSwing {
+    private static SwingTable aSwing;
 
 
     public static void main(String[] args){
-
-        if(args[0] != null) {
+        try {
             File swingFile = new File(args[0]);
-        } else {
+            aSwing = new SwingTable(swingFile);
+            aSwing.printSwing();
+        } catch(FileNotFoundException fn) {
             System.err.println("File not found");
         }
-
-
     }
 }
