@@ -30,7 +30,9 @@ public class SwingSample {
     }
 
     public double getXYZ(String xyz) throws IllegalArgumentException {
-        if(xyz.equalsIgnoreCase("ax")){
+        if(xyz.equalsIgnoreCase("timestamp")){
+            return this.timeStamp;
+        } else if(xyz.equalsIgnoreCase("ax")){
             return this.aX;
         } else if (xyz.equalsIgnoreCase("ay")){
             return this.aY;

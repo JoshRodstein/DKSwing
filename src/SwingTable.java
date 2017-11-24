@@ -23,7 +23,6 @@ public class SwingTable {
                     Double.parseDouble(row[4]),
                     Double.parseDouble(row[5]),
                     Double.parseDouble(row[6]));
-            System.out.println(sample.getTimestamp());
             swingSamples.add(sample);
             indexMap.put(sample.getTimestamp(), swingSamples.size()-1);
         }
@@ -47,7 +46,7 @@ public class SwingTable {
         int foundIndex = -1;
 
         for(int i = begin; i <= end; i++){
-            swingSamples.get(i).getXYZ(column);
+            value = swingSamples.get(i).getXYZ(column);
             if(value > thresh) {
               if(foundIndex == -1){
                   foundIndex = i;
@@ -80,7 +79,7 @@ public class SwingTable {
         int foundIndex = -1;
 
 
-        for(int i = begin; i <= end; i++){
+        for(int i = begin; i >= end; i--){
             value = swingSamples.get(i).getXYZ(column);
             if(value > threshLo && value < threshHi) {
                 if(foundIndex == -1){
@@ -99,13 +98,41 @@ public class SwingTable {
     }
 
     /*
-    * rom indexBegin to indexEnd, search data1 for values that are higher than threshold1 and also search
+    * from indexBegin to indexEnd, search data1 for values that are higher than threshold1 and also search
     * data2 for values that are higher than threshold2. Return the first index where both data1 and data2
     * have values that meet these criteria for at least winLength samples.
     * */
     public int searchContinuityAboveValueTwoSignals(String data1, String data2, int indexBegin,
                                          int indexEnd, double threshold1, double threshold2, int winLength){
-        return 0;
+        String column1 = data1;
+        String column2 = data2;
+        int begin = indexBegin;
+        int end = indexEnd;
+        int winL = winLength;
+        double value1 = 0;
+        double value2 = 0;
+        double thresh1 = threshold1;
+        double thresh2 = threshold2;
+        int foundIndex = -1;
+
+
+        for(int i = begin; i <= end; i--){
+            value1 = swingSamples.get(i).getXYZ(column1);
+            value2 = swingSamples.get(i).getXYZ(column2);
+            if(value1 > thresh1 && value2 > thresh2) {
+                if(foundIndex == -1){
+                    foundIndex = i;
+                }
+            } else {
+                if((i - 1) - foundIndex >= winLength){
+                    return foundIndex;
+                }
+                foundIndex = -1;
+            }
+        }
+
+        return foundIndex;
+
     }
 
     /*
@@ -113,9 +140,35 @@ public class SwingTable {
     * thresholdHi. Return the the starting index and ending index of all continuous samples that meet this
     * criteria for at least winLength data points.
     * */
-    public int searchMultiContinuityWithinRange(String data, int indexBegin, int indexEnd,
+    public int[] searchMultiContinuityWithinRange(String data, int indexBegin, int indexEnd,
                                                 double thresholdLo, double thresholdHi, int winLength){
-        return 0;
+        String column = data;
+        int begin = indexBegin;
+        int end = indexEnd;
+        int winL = winLength;
+        double value = 0;
+        double threshLo = thresholdLo;
+        double threshHi = thresholdHi;
+        int[] foundIndex = {-1,-1};
+
+
+        for(int i = begin; i <= end; i++){
+            value = swingSamples.get(i).getXYZ(column);
+            if(value > threshLo && value < threshHi) {
+                if(foundIndex[0] == -1){
+                    foundIndex[0] = i;
+                }
+            } else {
+                if(i - foundIndex[0] >= winLength){
+                    foundIndex[1] = i-1;
+                    break;
+                }
+                foundIndex[0] = -1;
+            }
+        }
+
+        return foundIndex;
+
     }
 
     public void printSwing(){
