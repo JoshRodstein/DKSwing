@@ -131,7 +131,7 @@ public class SwingTable {
                                                 double thresholdLo, double thresholdHi, int winLength){
         int[] foundIndex = {-1,-1};
         double value = 0;
-        
+
         for(int i = indexBegin; i <= indexEnd; i++){
             value = swingSamples.get(i).getXYZ(data);
             if(value > thresholdLo && value < thresholdHi) {
