@@ -2,19 +2,22 @@ import java.util.*;
 import java.io.*;
 
 public class SwingTable {
-    ArrayList<SwingSample> swingSamples;
-    Map<Integer, Integer> indexMap = new HashMap<Integer, Integer>();
-    SwingSample sample = new SwingSample();
-    Scanner scan;
-    int ROW_SIZE = 7;
+    private ArrayList<SwingSample> swingSamples;
+    private Map<Integer, Integer> indexMap;
+    private SwingSample sample;
+    private Scanner scan;
+    private int row_size;
 
 
     public SwingTable(File swingData) throws FileNotFoundException{
-        scan = new Scanner(swingData);
         int rowNum = 0;
+        scan = new Scanner(swingData);
         swingSamples = new ArrayList<SwingSample>();
+        indexMap = new HashMap<Integer, Integer>();
+
         while(scan.hasNextLine()){
             String[] row = scan.nextLine().split(",");
+            row_size = row.length;
             sample = new SwingSample(
                     Integer.decode(row[0]),
                     Double.parseDouble(row[1]),
@@ -37,17 +40,12 @@ public class SwingTable {
     * */
     public int searchContinuityAboveValue(String data, int indexBegin, int indexEnd,
                                           double threshold, int winLength){
-        String column = data;
-        int begin = indexBegin;
-        int end = indexEnd;
-        int winL = winLength;
-        double value = 0;
-        double thresh = threshold;
         int foundIndex = -1;
+        double value = 0;
 
-        for(int i = begin; i <= end; i++){
-            value = swingSamples.get(i).getXYZ(column);
-            if(value > thresh) {
+        for(int i = indexBegin; i <= indexEnd; i++){
+            value = swingSamples.get(i).getXYZ(data);
+            if(value > threshold) {
               if(foundIndex == -1){
                   foundIndex = i;
               }
@@ -78,6 +76,9 @@ public class SwingTable {
         double threshHi = thresholdHi;
         int foundIndex = -1;
 
+        if (indexBegin < indexEnd) {
+            return -1;
+        }
 
         for(int i = begin; i >= end; i--){
             value = swingSamples.get(i).getXYZ(column);
