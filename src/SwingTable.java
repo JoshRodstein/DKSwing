@@ -67,22 +67,16 @@ public class SwingTable {
     * */
     public int backSearchContinuityWithinRange(String data, int indexBegin, int indexEnd,
                                                double thresholdLo, double thresholdHi, int winLength){
-        String column = data;
-        int begin = indexBegin;
-        int end = indexEnd;
-        int winL = winLength;
-        double value = 0;
-        double threshLo = thresholdLo;
-        double threshHi = thresholdHi;
         int foundIndex = -1;
+        double value = 0;
 
         if (indexBegin < indexEnd) {
             return -1;
         }
 
-        for(int i = begin; i >= end; i--){
-            value = swingSamples.get(i).getXYZ(column);
-            if(value > threshLo && value < threshHi) {
+        for(int i = indexBegin; i >= indexEnd; i--){
+            value = swingSamples.get(i).getXYZ(data);
+            if(value > thresholdLo && value < thresholdHi) {
                 if(foundIndex == -1){
                     foundIndex = i;
                 }
@@ -105,22 +99,14 @@ public class SwingTable {
     * */
     public int searchContinuityAboveValueTwoSignals(String data1, String data2, int indexBegin,
                                          int indexEnd, double threshold1, double threshold2, int winLength){
-        String column1 = data1;
-        String column2 = data2;
-        int begin = indexBegin;
-        int end = indexEnd;
-        int winL = winLength;
+        int foundIndex = -1;
         double value1 = 0;
         double value2 = 0;
-        double thresh1 = threshold1;
-        double thresh2 = threshold2;
-        int foundIndex = -1;
 
-
-        for(int i = begin; i <= end; i--){
-            value1 = swingSamples.get(i).getXYZ(column1);
-            value2 = swingSamples.get(i).getXYZ(column2);
-            if(value1 > thresh1 && value2 > thresh2) {
+        for(int i = indexBegin; i <= indexEnd; i--){
+            value1 = swingSamples.get(i).getXYZ(data1);
+            value2 = swingSamples.get(i).getXYZ(data2);
+            if(value1 > threshold1 && value2 > threshold2) {
                 if(foundIndex == -1){
                     foundIndex = i;
                 }
@@ -143,19 +129,12 @@ public class SwingTable {
     * */
     public int[] searchMultiContinuityWithinRange(String data, int indexBegin, int indexEnd,
                                                 double thresholdLo, double thresholdHi, int winLength){
-        String column = data;
-        int begin = indexBegin;
-        int end = indexEnd;
-        int winL = winLength;
-        double value = 0;
-        double threshLo = thresholdLo;
-        double threshHi = thresholdHi;
         int[] foundIndex = {-1,-1};
-
-
-        for(int i = begin; i <= end; i++){
-            value = swingSamples.get(i).getXYZ(column);
-            if(value > threshLo && value < threshHi) {
+        double value = 0;
+        
+        for(int i = indexBegin; i <= indexEnd; i++){
+            value = swingSamples.get(i).getXYZ(data);
+            if(value > thresholdLo && value < thresholdHi) {
                 if(foundIndex[0] == -1){
                     foundIndex[0] = i;
                 }
