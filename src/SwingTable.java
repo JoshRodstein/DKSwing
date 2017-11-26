@@ -1,3 +1,4 @@
+import java.lang.reflect.Array;
 import java.util.*;
 import java.io.*;
 
@@ -71,7 +72,7 @@ public class SwingTable {
         double value = 0;
 
         if (indexBegin < indexEnd) {
-            return -1;
+            throw new IllegalArgumentException("Invalid range, begin must be greater than end");
         }
 
         for(int i = indexBegin; i >= indexEnd; i--){
@@ -81,7 +82,7 @@ public class SwingTable {
                     foundIndex = i;
                 }
             } else {
-                if(i - foundIndex >= winLength){
+                if(indexBegin - (i) >= winLength){
                     return foundIndex;
                 }
                 foundIndex = -1;
@@ -127,33 +128,42 @@ public class SwingTable {
     * thresholdHi. Return the the starting index and ending index of all continuous samples that meet this
     * criteria for at least winLength data points.
     * */
-    public int[] searchMultiContinuityWithinRange(String data, int indexBegin, int indexEnd,
-                                                double thresholdLo, double thresholdHi, int winLength){
-        int[] foundIndex = {-1,-1};
-        int foundStartIndex;
+    public ArrayList<IndexPair> searchMultiContinuityWithinRange(String data, int indexBegin, int indexEnd,
+                                                  double thresholdLo, double thresholdHi, int winLength){
+        ArrayList<IndexPair> indexList = new ArrayList<IndexPair>();
+        int foundStart = -1;
+        int foundEnd;
         double value = 0;
+
+        if(indexBegin < 0 || indexEnd > swingSamples.size()){
+            throw new IndexOutOfBoundsException("Invalid index values " + indexBegin + ", " + indexEnd);
+        }
 
         for(int i = indexBegin; i <= indexEnd; i++){
             value = swingSamples.get(i).getXYZ(data);
             if(value > thresholdLo && value < thresholdHi) {
-                if(foundIndex[0] == -1){
-                    foundIndex[0] = i;
+                if(foundStart == -1){
+                    foundStart = i;
                 }
             } else {
-                if(i - foundIndex[0] >= winLength){
-                    foundIndex[1] = i-1;
-                    break;
+                if(i - foundStart >= winLength){
+                    foundEnd = i-1;
+                    indexList.add(new IndexPair(foundStart, foundEnd));
                 }
-                foundIndex[0] = -1;
+                foundStart = -1;
             }
         }
 
-        return foundIndex;
-
+        return indexList;
     }
 
-    public void printSwing(){
-        for(int i = 0; i < swingSamples.size(); i++){
+    public void printSwing(int indexBegin, int indexEnd){
+
+        if(indexBegin < 0 || indexEnd > swingSamples.size()){
+            throw new IndexOutOfBoundsException("Invalid index values " + indexBegin + ", " + indexEnd);
+        }
+
+        for(int i = indexBegin; i < indexEnd; i++){
             System.out.println();
             System.out.print(swingSamples.get(i).getTimestamp());
             System.out.print(", " + swingSamples.get(i).getXYZ("ax"));
