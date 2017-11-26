@@ -170,8 +170,8 @@ public class SwingTable {
                 if((foundStart > -1) && (i - foundStart >= winLength)){
                     foundEnd = i-1;
                     indexList.add(new IndexPair(foundStart, foundEnd));
-                    foundStart = -1;
                 }
+                foundStart = -1;
             }
         }
 
