@@ -44,15 +44,21 @@ public class SwingTable {
         int foundIndex = -1;
         double value = 0;
 
+        if(indexBegin < 0 || indexEnd > swingSamples.size()){
+            throw new IndexOutOfBoundsException("Index values must be within bounds of sample set");
+        }
+
+        if (indexBegin > indexEnd) {
+            throw new IllegalArgumentException("Begin index: " + indexBegin + ", may not be greater than end index: " + indexEnd);
+        }
+
         for(int i = indexBegin; i <= indexEnd; i++){
             value = swingSamples.get(i).getXYZ(data);
-            if(value > threshold) {
-              if(foundIndex == -1){
-                  foundIndex = i;
-              }
+            if(value > threshold && foundIndex == -1) {
+                foundIndex = i;
             } else {
                 if(i - foundIndex >= winLength){
-                    return foundIndex;
+                    break;
                 }
                 foundIndex = -1;
             }
@@ -67,30 +73,33 @@ public class SwingTable {
     * that meet this criteria for at least winLength samples.
     * */
     public int backSearchContinuityWithinRange(String data, int indexBegin, int indexEnd,
-                                               double thresholdLo, double thresholdHi, int winLength){
+                                               double thresholdLo, double thresholdHi, int winLength) {
         int foundIndex = -1;
         double value = 0;
 
+        if(indexBegin < 0 || indexEnd > swingSamples.size()){
+            throw new IndexOutOfBoundsException("Index values must be within bounds of sample set");
+        }
+
         if (indexBegin < indexEnd) {
-            throw new IllegalArgumentException("Invalid range, begin must be greater than end");
+            throw new IllegalArgumentException("End index: " + indexEnd + ", may not be greater than begin index: " + indexBegin);
         }
 
         for(int i = indexBegin; i >= indexEnd; i--){
             value = swingSamples.get(i).getXYZ(data);
-            if(value > thresholdLo && value < thresholdHi) {
+            if(value > thresholdLo && value < thresholdHi && foundIndex == -1) {
                 if(foundIndex == -1){
                     foundIndex = i;
                 }
             } else {
-                if(indexBegin - (i) >= winLength){
-                    return foundIndex;
+                if((indexBegin - i) >= winLength){
+                    break;
                 }
                 foundIndex = -1;
             }
         }
 
         return foundIndex;
-
     }
 
     /*
@@ -104,7 +113,15 @@ public class SwingTable {
         double value1 = 0;
         double value2 = 0;
 
-        for(int i = indexBegin; i <= indexEnd; i--){
+        if(indexBegin < 0 || indexEnd > swingSamples.size()){
+            throw new IndexOutOfBoundsException("Index values must be within bounds of sample set");
+        }
+
+        if (indexBegin > indexEnd) {
+            throw new IllegalArgumentException("Begin index: " + indexBegin + ", may not be greater than end index: " + indexEnd);
+        }
+
+        for(int i = indexBegin; i <= indexEnd; i++){
             value1 = swingSamples.get(i).getXYZ(data1);
             value2 = swingSamples.get(i).getXYZ(data2);
             if(value1 > threshold1 && value2 > threshold2) {
@@ -112,8 +129,8 @@ public class SwingTable {
                     foundIndex = i;
                 }
             } else {
-                if((i - 1) - foundIndex >= winLength){
-                    return foundIndex;
+                if((foundIndex > -1) && (((i-1) - foundIndex) >= winLength)){
+                    break;
                 }
                 foundIndex = -1;
             }
@@ -136,7 +153,11 @@ public class SwingTable {
         double value = 0;
 
         if(indexBegin < 0 || indexEnd > swingSamples.size()){
-            throw new IndexOutOfBoundsException("Invalid index values " + indexBegin + ", " + indexEnd);
+            throw new IndexOutOfBoundsException("Index values must be within bounds of sample set");
+        }
+
+        if (indexBegin > indexEnd) {
+            throw new IllegalArgumentException("Begin index: " + indexBegin + ", may not be greater than end index: " + indexEnd);
         }
 
         for(int i = indexBegin; i <= indexEnd; i++){
@@ -146,11 +167,11 @@ public class SwingTable {
                     foundStart = i;
                 }
             } else {
-                if(i - foundStart >= winLength){
+                if((foundStart > -1) && (i - foundStart >= winLength)){
                     foundEnd = i-1;
                     indexList.add(new IndexPair(foundStart, foundEnd));
+                    foundStart = -1;
                 }
-                foundStart = -1;
             }
         }
 

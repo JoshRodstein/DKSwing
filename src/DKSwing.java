@@ -21,6 +21,9 @@ public class DKSwing {
                 , 20 );
         System.out.println(i);
 
+        i = aSwing.searchContinuityAboveValueTwoSignals("ax", "wx", 0, 1200, 0, 0, 5 );
+        System.out.println(i);
+
         System.exit(0);
 
     }
