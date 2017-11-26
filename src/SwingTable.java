@@ -130,6 +130,7 @@ public class SwingTable {
     public int[] searchMultiContinuityWithinRange(String data, int indexBegin, int indexEnd,
                                                 double thresholdLo, double thresholdHi, int winLength){
         int[] foundIndex = {-1,-1};
+        int foundStartIndex;
         double value = 0;
 
         for(int i = indexBegin; i <= indexEnd; i++){
