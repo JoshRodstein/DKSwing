@@ -1,3 +1,20 @@
+/*
+ * Problem Set for Diamond Kinetics:
+ *  -Implement data structure for sample swing data in 'latestSwing.csv'
+ *  -Implement 4 methods for searching continuous values
+ *
+ *  Array list backed ADT, with parralel mapping of timestamps to
+ *  to corresponding ArrayList index. Makes possible O(1) search for sample
+ *  by timeStamp.
+ *
+ *  Currently indexes start at 1 to mirror logical indexing of csv spreadsheet
+ *  
+ *  Joshua Rodstein
+ *  jor94@pitt.edu
+ *
+ *  */
+
+
 import java.util.*;
 import java.io.*;
 
@@ -10,11 +27,13 @@ public class SwingTable {
 
 
     public SwingTable(File swingData) throws FileNotFoundException{
-        int rowNum = 0;
         scan = new Scanner(swingData);
         swingSamples = new ArrayList<SwingSample>();
         indexMap = new HashMap<Integer, Integer>();
 
+        // add null object to index 0, making arraylist base 1
+        // to mirror logical indexing of csv in spreadsheet
+        swingSamples.add(null);
         while(scan.hasNextLine()){
             String[] row = scan.nextLine().split(",");
             row_size = row.length;
@@ -29,13 +48,14 @@ public class SwingTable {
             swingSamples.add(sample);
             indexMap.put(sample.getTimestamp(), swingSamples.size()-1);
         }
-        rowNum++;
     }
 
 
-    /*
+    /**
     * from indexBegin to indexEnd, search data for values that are higher than threshold.
     * Return the first index where data has values that meet this criteria for at least winLength samples.
+    *
+    * @return int - first(lowest) index of first continuous run of qualifying values of at least winLength
     * */
     public int searchContinuityAboveValue(String data, int indexBegin, int indexEnd,
                                           double threshold, int winLength){
@@ -67,17 +87,19 @@ public class SwingTable {
         return foundIndex;
     }
 
-    /*
+    /**
     * from indexBegin to indexEnd (where indexBegin is larger than indexEnd), search data for values that
     * are higher than thresholdLo and lower than thresholdHi. Return the first index where data has values
     * that meet this criteria for at least winLength samples.
+    *
+    * @return int - first(lowest) index of first continuous run of qualifying values of at least winLength
     * */
     public int backSearchContinuityWithinRange(String data, int indexBegin, int indexEnd,
                                                double thresholdLo, double thresholdHi, int winLength) {
         int foundIndex = -1;
         double value = 0;
 
-        if(indexBegin < 0 || indexEnd > swingSamples.size()){
+        if(indexBegin < 1 || indexEnd > swingSamples.size()){
             throw new IndexOutOfBoundsException("Index values must be within bounds of sample set");
         }
         if (indexBegin < indexEnd) {
@@ -105,10 +127,12 @@ public class SwingTable {
         return foundIndex;
     }
 
-    /*
+    /**
     * from indexBegin to indexEnd, search data1 for values that are higher than threshold1 and also search
     * data2 for values that are higher than threshold2. Return the first index where both data1 and data2
     * have values that meet these criteria for at least winLength samples.
+    *
+    * @return int - first(lowest) index of first continuous run of qualifying values of at least winLength
     * */
     public int searchContinuityAboveValueTwoSignals(String data1, String data2, int indexBegin,
                                          int indexEnd, double threshold1, double threshold2, int winLength){
@@ -116,7 +140,7 @@ public class SwingTable {
         double value1 = 0;
         double value2 = 0;
 
-        if(indexBegin < 0 || indexEnd > swingSamples.size()){
+        if(indexBegin < 1 || indexEnd > swingSamples.size()){
             throw new IndexOutOfBoundsException("Index values must be within bounds of sample set");
         }
 
@@ -144,10 +168,13 @@ public class SwingTable {
 
     }
 
-    /*
+    /**
     * from indexBegin to indexEnd, search data for values that are higher than thresholdLo and lower than
     * thresholdHi. Return the the starting index and ending index of all continuous samples that meet this
     * criteria for at least winLength data points.
+    *
+    * @return ArrayList<IndexPair> - List of objects containing first and last (lowest to highest) int index
+    * pairs of all found continuous runs of qualifying values of at least winlength
     * */
     public ArrayList<IndexPair> searchMultiContinuityWithinRange(String data, int indexBegin, int indexEnd,
                                                   double thresholdLo, double thresholdHi, int winLength){
@@ -156,10 +183,9 @@ public class SwingTable {
         int foundEnd;
         double value = 0;
 
-        if(indexBegin < 0 || indexEnd > swingSamples.size()){
+        if(indexBegin < 1 || indexEnd > swingSamples.size()){
             throw new IndexOutOfBoundsException("Index values must be within bounds of sample set");
         }
-
         if (indexBegin > indexEnd) {
             throw new IllegalArgumentException("Begin index: " + indexBegin + ", may not be greater than end index: " + indexEnd);
         }
@@ -182,12 +208,12 @@ public class SwingTable {
             }
         }
 
-        return indexList;
+        return new ArrayList<>(indexList);
     }
 
     public void printSwing(int indexBegin, int indexEnd){
 
-        if(indexBegin < 0 || indexEnd > swingSamples.size()){
+        if(indexBegin < 1 || indexEnd > swingSamples.size()){
             throw new IndexOutOfBoundsException("Invalid index values " + indexBegin + ", " + indexEnd);
         }
 
