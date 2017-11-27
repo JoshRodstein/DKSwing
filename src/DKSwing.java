@@ -1,3 +1,10 @@
+/*
+* Basic driver for testing methods of SwingTable
+*
+* Joshua Rodstein
+* jor94@pitt.edu
+* */
+
 import java.io.*;
 import java.util.ArrayList;
 
@@ -24,7 +31,7 @@ public class DKSwing {
 
         int y = aSwing.searchContinuityAboveValueTwoSignals("ax", "wx", 1, 1200, 0,
                 0, 5);
-        System.out.println("From index [1 - 1200] for sensor 'ax' above value 0 and for sensor wx above value 0 of length >= 5 : Index["+y+"]");
+        System.out.println("From index [1 - 1200] for sensor 'ax' above value 0 and for sensor wx above value 0, of length >= 5 : Index["+y+"]");
 
         ArrayList<IndexPair> testList = aSwing.searchMultiContinuityWithinRange("ay", 1, 1200,
                 2, 3, 3);

@@ -8,7 +8,7 @@
  *  by timeStamp.
  *
  *  Currently indexes start at 1 to mirror logical indexing of csv spreadsheet
- *  
+ *
  *  Joshua Rodstein
  *  jor94@pitt.edu
  *
@@ -23,7 +23,6 @@ public class SwingTable {
     private Map<Integer, Integer> indexMap;
     private SwingSample sample;
     private Scanner scan;
-    private int row_size;
 
 
     public SwingTable(File swingData) throws FileNotFoundException{
@@ -36,7 +35,6 @@ public class SwingTable {
         swingSamples.add(null);
         while(scan.hasNextLine()){
             String[] row = scan.nextLine().split(",");
-            row_size = row.length;
             sample = new SwingSample(
                     Integer.decode(row[0]),
                     Double.parseDouble(row[1]),
