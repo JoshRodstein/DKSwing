@@ -1,4 +1,3 @@
-import java.lang.reflect.Array;
 import java.util.*;
 import java.io.*;
 
@@ -31,7 +30,6 @@ public class SwingTable {
             indexMap.put(sample.getTimestamp(), swingSamples.size()-1);
         }
         rowNum++;
-        System.out.println("row: " + rowNum);
     }
 
 
@@ -47,7 +45,6 @@ public class SwingTable {
         if(indexBegin < 0 || indexEnd > swingSamples.size()){
             throw new IndexOutOfBoundsException("Index values must be within bounds of sample set");
         }
-
         if (indexBegin > indexEnd) {
             throw new IllegalArgumentException("Begin index: " + indexBegin + ", may not be greater than end index: " + indexEnd);
         }
