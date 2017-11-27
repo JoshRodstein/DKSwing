@@ -15,11 +15,11 @@ public class DKSwing {
             System.err.println("File not found");
         }
 
-        int i = aSwing.searchContinuityAboveValue("ax", 20,1200, 13, 1);
+        int i = aSwing.searchContinuityAboveValue("timestamp", 0,30, 1249, 10);
         System.out.println(i);
 
-        i = aSwing.backSearchContinuityWithinRange("ax", 881,0, 0,
-                16, 5 );
+        i = aSwing.backSearchContinuityWithinRange("timestamp", 860,810, 1045145,
+                1072616, 20 );
         System.out.println(i);
 
         i = aSwing.searchContinuityAboveValueTwoSignals("ax", "wx", 0, 1200, 0,
@@ -28,6 +28,7 @@ public class DKSwing {
 
         ArrayList<IndexPair> testList = aSwing.searchMultiContinuityWithinRange("ay", 0, 1200,
                 2, 3, 5);
+
         for(i = 0; i < testList.size(); i++){
             System.out.println(testList.get(i).getStartIndex() + " : " + testList.get(i).getEndIndex());
         }
