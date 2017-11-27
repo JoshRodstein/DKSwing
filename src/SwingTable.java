@@ -54,13 +54,16 @@ public class SwingTable {
 
         for(int i = indexBegin; i <= indexEnd; i++){
             value = swingSamples.get(i).getXYZ(data);
-            if(value > threshold && foundIndex == -1) {
-                foundIndex = i;
-            } else {
+            if(value > threshold) {
+                if(foundIndex == -1) {
+                    foundIndex = i;
+                }
+            } else if (foundIndex != -1){
                 if(i - foundIndex >= winLength){
                     break;
+                } else {
+                    foundIndex = -1;
                 }
-                foundIndex = -1;
             }
         }
 
@@ -80,22 +83,25 @@ public class SwingTable {
         if(indexBegin < 0 || indexEnd > swingSamples.size()){
             throw new IndexOutOfBoundsException("Index values must be within bounds of sample set");
         }
-
         if (indexBegin < indexEnd) {
             throw new IllegalArgumentException("End index: " + indexEnd + ", may not be greater than begin index: " + indexBegin);
         }
 
         for(int i = indexBegin; i >= indexEnd; i--){
             value = swingSamples.get(i).getXYZ(data);
-            if(value > thresholdLo && value < thresholdHi && foundIndex == -1) {
+            if(value > thresholdLo && value < thresholdHi) {
                 if(foundIndex == -1){
                     foundIndex = i;
+                } else if (foundIndex == indexEnd && (foundIndex - i) >= winLength){
+                    foundIndex = i;
                 }
-            } else {
-                if((indexBegin - i) >= winLength){
+            } else if (foundIndex != -1){
+                if(foundIndex - i >= winLength){
+                    foundIndex = i + 1;
                     break;
+                } else {
+                    foundIndex = -1;
                 }
-                foundIndex = -1;
             }
         }
 
@@ -128,11 +134,12 @@ public class SwingTable {
                 if(foundIndex == -1){
                     foundIndex = i;
                 }
-            } else {
-                if((foundIndex > -1) && (((i-1) - foundIndex) >= winLength)){
+            } else if (foundIndex != -1){
+                if(i - foundIndex >= winLength){
                     break;
+                } else {
+                    foundIndex = -1;
                 }
-                foundIndex = -1;
             }
         }
 
@@ -165,9 +172,12 @@ public class SwingTable {
             if(value > thresholdLo && value < thresholdHi) {
                 if(foundStart == -1){
                     foundStart = i;
+                } else if (foundStart == indexEnd && (foundStart - i) >= winLength){
+                    foundEnd = i;
+                    indexList.add(new IndexPair(foundStart, foundEnd));
                 }
-            } else {
-                if((foundStart > -1) && (i - foundStart >= winLength)){
+            } else if (foundStart != -1) {
+                if(i - foundStart >= winLength){
                     foundEnd = i-1;
                     indexList.add(new IndexPair(foundStart, foundEnd));
                 }
