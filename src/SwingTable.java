@@ -45,7 +45,7 @@ public class SwingTable {
                     Double.parseDouble(row[5]),
                     Double.parseDouble(row[6]));
             swingSamples.add(sample);
-            indexMap.put(sample.getTimestamp(), swingSamples.size()-1);
+            indexMap.put(sample.getTimestamp(), swingSamples.size());
         }
     }
 
