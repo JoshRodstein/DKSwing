@@ -31,7 +31,8 @@ public class SwingTable {
         indexMap = new HashMap<Integer, Integer>();
 
         // add null object to index 0, making arraylist base 1
-        // to mirror logical indexing of csv in spreadsheet
+        // to mirror logical indexing of csv in spreadsheet.
+	// Parse file and populate swingSamples in parralel with indexMap
         swingSamples.add(null);
         while(scan.hasNextLine()){
             String[] row = scan.nextLine().split(",");
@@ -72,10 +73,16 @@ public class SwingTable {
 
         for(int i = indexBegin; i <= indexEnd; i++){
             value = swingSamples.get(i).getXYZ(data);
+	    // if value meets search criteria check if
+	    // we are in the middle of a run of continuity.
+	    // if not, then i is the first index of new continuity
             if(value > threshold) {
                 if(foundIndex == -1) {
                     foundIndex = i;
                 }
+	    // if value is not valid, check if we were in a run of cont.
+	    // if so and run of cont. was at least winLenght in length, break.
+	    // if not, reset index and keep searching
             } else if (foundIndex != -1){
                 if(i - foundIndex >= winLength){
                     break;
@@ -110,14 +117,22 @@ public class SwingTable {
             throw new IllegalArgumentException("End index: " + indexEnd + ", may not be greater than begin index: " + indexBegin);
         }
 
+	// Iterate in decending order from begin to end index
         for(int i = indexBegin; i >= indexEnd; i--){
             value = swingSamples.get(i).getXYZ(data);
+	    // if value meets criteria, check if in a run
+	    // if not, then i is first index of new run  
             if(value > thresholdLo && value < thresholdHi) {
                 if(foundIndex == -1){
                     foundIndex = i;
+		// if we are in a run, and at the last index of our search
+		// we check if the run of continuity is at least winLength in length
                 } else if (foundIndex == indexEnd && (foundIndex - i) >= winLength){
                     foundIndex = i;
                 }
+	      // if value is not valid, and previous run is of valid length
+	      // then (i + 1) is first index of the continuity. set index and break
+	      // otherwise reset index and continue search
             } else if (foundIndex != -1){
                 if(foundIndex - i >= winLength){
                     foundIndex = i + 1;
@@ -158,10 +173,16 @@ public class SwingTable {
         for(int i = indexBegin; i <= indexEnd; i++){
             value1 = swingSamples.get(i).getXYZ(data1);
             value2 = swingSamples.get(i).getXYZ(data2);
+	    // if value1 and value2 meets search criteria 1 and 2
+	    // check if we are in the middle of a run of continuity.
+	    // if not, then i is the first index of new continuity
             if(value1 > threshold1 && value2 > threshold2) {
                 if(foundIndex == -1){
                     foundIndex = i;
                 }
+	    // if value1 and value 2 are not valid, check in in run of continuity
+	    // if so and run of cont. was at least winLenght in length, break.
+	    // if not, reset index and keep searching
             } else if (foundIndex != -1){
                 if(i - foundIndex >= winLength){
                     break;
@@ -202,16 +223,25 @@ public class SwingTable {
 
         for(int i = indexBegin; i <= indexEnd; i++){
             value = swingSamples.get(i).getXYZ(data);
+	    // if value meets criteria, check if in a run
+	    // if not, then i is first index of new run
             if(value > thresholdLo && value < thresholdHi) {
                 if(foundStart == -1){
                     foundStart = i;
+		// if in middle of continuity, and at last index of search
+		// if if length of continuity is at least winLength in length
+		// if so, end index is i. 
                 } else if (foundStart == indexEnd && (foundStart - i) >= winLength){
                     foundEnd = i;
+		    // add new indexPair to indexList
                     indexList.add(new IndexPair(foundStart, foundEnd));
                 }
+	    // if value not valid, check if index i-1 was end of a valid run
+	    // if valid, i-1 is last index. 
             } else if (foundStart != -1) {
                 if(i - foundStart >= winLength){
                     foundEnd = i-1;
+		    // add new indexPair to indexList
                     indexList.add(new IndexPair(foundStart, foundEnd));
                 }
                 foundStart = -1;
