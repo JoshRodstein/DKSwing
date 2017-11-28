@@ -53,7 +53,10 @@ public class SwingTable {
     * from indexBegin to indexEnd, search data for values that are higher than threshold.
     * Return the first index where data has values that meet this criteria for at least winLength samples.
     *
-    * @return int - first(lowest) index of first continuous run of qualifying values of at least winLength
+    * @return int - first(lowest) index of first continuous run of qualifying values of at least winLength. 
+    * @return -1 if no continuities of size winLength are found
+    * @throws IndexOutOfBoundsException if either indexBegin or indexEnd is outside bounds of sample set
+    * @throws IllegalArgumentException if indexBegin is greater than indexEnd
     * */
     public int searchContinuityAboveValue(String data, int indexBegin, int indexEnd,
                                           double threshold, int winLength){
@@ -91,6 +94,9 @@ public class SwingTable {
     * that meet this criteria for at least winLength samples.
     *
     * @return int - first(lowest) index of first continuous run of qualifying values of at least winLength
+    * @return -1 if no continuities of size winLength are found
+    * @throws IndexOutOfBoundsException if either indexBegin or indexEnd is outside bounds of sample set
+    * @throws IllegalArgumentException if indexEnd id greater than indexBegin
     * */
     public int backSearchContinuityWithinRange(String data, int indexBegin, int indexEnd,
                                                double thresholdLo, double thresholdHi, int winLength) {
@@ -131,6 +137,9 @@ public class SwingTable {
     * have values that meet these criteria for at least winLength samples.
     *
     * @return int - first(lowest) index of first continuous run of qualifying values of at least winLength
+    * @return -1 if no continuities of size winLength are found
+    * @throws IndexOutOfBoundsException if either indexBegin or indexEnd is outside bounds of sample set
+    * @throws IllegalArgumentException if indexBegin is greater than indexEnd
     * */
     public int searchContinuityAboveValueTwoSignals(String data1, String data2, int indexBegin,
                                          int indexEnd, double threshold1, double threshold2, int winLength){
@@ -173,6 +182,9 @@ public class SwingTable {
     *
     * @return ArrayList<IndexPair> - List of objects containing first and last (lowest to highest) int index
     * pairs of all found continuous runs of qualifying values of at least winlength
+    * @return empty ArrayList if no continuities of at least winLength length are found
+    * @throws IndexOutOfBoundsException if either indexBegin or indexEnd is outside bounds of sample set
+    * @throws IllegalArgumentException if indexBegin is greater than indexEnd
     * */
     public ArrayList<IndexPair> searchMultiContinuityWithinRange(String data, int indexBegin, int indexEnd,
                                                   double thresholdLo, double thresholdHi, int winLength){
@@ -209,6 +221,13 @@ public class SwingTable {
         return new ArrayList<>(indexList);
     }
 
+    /**
+     * Method for ease of printing specified range of sample values/rows
+     *
+     * @param indexBegin - index at which to start printing/iteration
+     * @param indexEnd - Index at which to end printing/iteration
+     * @throws IndexOutOfBoundsException if either index is outside of sample data bounds
+     */
     public void printSwing(int indexBegin, int indexEnd){
 
         if(indexBegin < 1 || indexEnd > swingSamples.size()){
