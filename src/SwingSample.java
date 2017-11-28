@@ -1,4 +1,7 @@
-
+/*
+ * Class: SwingSample - represents sample/data point from Swing data table 
+ *
+ */
 
 public class SwingSample {
     private int timeStamp;

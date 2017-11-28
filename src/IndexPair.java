@@ -1,4 +1,8 @@
-
+/*
+ * Class: IndexPair - holds start and end index of a continuous 
+ * run of values in a swing data table. 
+ *
+ */
 
 public class IndexPair {
     private int start_index;
