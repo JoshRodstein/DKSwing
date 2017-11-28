@@ -50,7 +50,7 @@ public class SwingTable {
 
 
     /**
-    * from indexBegin to indexEnd, search data for values that are higher than threshold.
+    * <P>from indexBegin to indexEnd, search data for values that are higher than threshold.
     * Return the first index where data has values that meet this criteria for at least winLength samples.
     *
     * @return int - first(lowest) index of first continuous run of qualifying values of at least winLength. 
@@ -89,7 +89,7 @@ public class SwingTable {
     }
 
     /**
-    * from indexBegin to indexEnd (where indexBegin is larger than indexEnd), search data for values that
+    * <P>from indexBegin to indexEnd (where indexBegin is larger than indexEnd), search data for values that
     * are higher than thresholdLo and lower than thresholdHi. Return the first index where data has values
     * that meet this criteria for at least winLength samples.
     *
@@ -132,7 +132,7 @@ public class SwingTable {
     }
 
     /**
-    * from indexBegin to indexEnd, search data1 for values that are higher than threshold1 and also search
+    * <P>from indexBegin to indexEnd, search data1 for values that are higher than threshold1 and also search
     * data2 for values that are higher than threshold2. Return the first index where both data1 and data2
     * have values that meet these criteria for at least winLength samples.
     *
@@ -176,7 +176,7 @@ public class SwingTable {
     }
 
     /**
-    * from indexBegin to indexEnd, search data for values that are higher than thresholdLo and lower than
+    * <P>from indexBegin to indexEnd, search data for values that are higher than thresholdLo and lower than
     * thresholdHi. Return the the starting index and ending index of all continuous samples that meet this
     * criteria for at least winLength data points.
     *
@@ -222,7 +222,7 @@ public class SwingTable {
     }
 
     /**
-     * Method for ease of printing specified range of sample values/rows
+     * <P>Method for ease of printing specified range of sample values/rows
      *
      * @param indexBegin - index at which to start printing/iteration
      * @param indexEnd - Index at which to end printing/iteration
