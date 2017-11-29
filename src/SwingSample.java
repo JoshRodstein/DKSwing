@@ -3,6 +3,8 @@
  *
  */
 
+
+
 public class SwingSample {
     private int timeStamp;
     private double aX, aY, aZ, wX, wY, wZ;
@@ -32,24 +34,35 @@ public class SwingSample {
         return this.timeStamp;
     }
 
-    public double getXYZ(String xyz) throws IllegalArgumentException {
-        if(xyz.equalsIgnoreCase("timestamp")){
+    public double getXYZ(column data) throws IllegalArgumentException {
+        if(data == column.TIMESTAMP){
             return this.timeStamp;
-        } else if(xyz.equalsIgnoreCase("ax")){
+        } else if(data == column.AX){
             return this.aX;
-        } else if (xyz.equalsIgnoreCase("ay")){
+        } else if (data == column.AY){
             return this.aY;
-        } else if (xyz.equalsIgnoreCase("az")){
+        } else if (data == column.AZ){
             return this.aZ;
-        } else if (xyz.equalsIgnoreCase("wx")){
+        } else if (data == column.WX){
             return this.wX;
-        } else if(xyz.equalsIgnoreCase("wy")){
+        } else if(data == column.WY){
             return this.wY;
-        } else if(xyz.equalsIgnoreCase("wz")) {
+        } else if(data == column.WX) {
             return this.wZ;
         } else {
-            throw new IllegalArgumentException("Invalid argument: " + xyz);
-        }
+	    return 0;
+	}
+        
+    }
+
+    public enum column{
+        TIMESTAMP,
+        AX,
+        AY,
+        AZ,
+        WX,
+        WY,
+        WZ
     }
 
 

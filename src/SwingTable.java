@@ -14,7 +14,6 @@
  *
  *  */
 
-
 import java.util.*;
 import java.io.*;
 
@@ -59,7 +58,7 @@ public class SwingTable {
     * @throws IndexOutOfBoundsException if either indexBegin or indexEnd is outside bounds of sample set
     * @throws IllegalArgumentException if indexBegin is greater than indexEnd
     * */
-    public int searchContinuityAboveValue(String data, int indexBegin, int indexEnd,
+    public int searchContinuityAboveValue(SwingSample.column data, int indexBegin, int indexEnd,
                                           double threshold, int winLength){
         int foundIndex = -1;
         double value = 0;
@@ -105,7 +104,7 @@ public class SwingTable {
     * @throws IndexOutOfBoundsException if either indexBegin or indexEnd is outside bounds of sample set
     * @throws IllegalArgumentException if indexEnd id greater than indexBegin
     * */
-    public int backSearchContinuityWithinRange(String data, int indexBegin, int indexEnd,
+    public int backSearchContinuityWithinRange(SwingSample.column data, int indexBegin, int indexEnd,
                                                double thresholdLo, double thresholdHi, int winLength) {
         int foundIndex = -1;
         double value = 0;
@@ -156,7 +155,7 @@ public class SwingTable {
     * @throws IndexOutOfBoundsException if either indexBegin or indexEnd is outside bounds of sample set
     * @throws IllegalArgumentException if indexBegin is greater than indexEnd
     * */
-    public int searchContinuityAboveValueTwoSignals(String data1, String data2, int indexBegin,
+    public int searchContinuityAboveValueTwoSignals(SwingSample.column data1, SwingSample.column data2, int indexBegin,
                                          int indexEnd, double threshold1, double threshold2, int winLength){
         int foundIndex = -1;
         double value1 = 0;
@@ -207,7 +206,7 @@ public class SwingTable {
     * @throws IndexOutOfBoundsException if either indexBegin or indexEnd is outside bounds of sample set
     * @throws IllegalArgumentException if indexBegin is greater than indexEnd
     * */
-    public ArrayList<IndexPair> searchMultiContinuityWithinRange(String data, int indexBegin, int indexEnd,
+    public ArrayList<IndexPair> searchMultiContinuityWithinRange(SwingSample.column data, int indexBegin, int indexEnd,
                                                   double thresholdLo, double thresholdHi, int winLength){
         ArrayList<IndexPair> indexList = new ArrayList<IndexPair>();
         int foundStart = -1;
@@ -251,6 +250,15 @@ public class SwingTable {
         return new ArrayList<>(indexList);
     }
 
+
+    public boolean isValid(double ...v){
+	
+
+	
+	return true;
+    }
+
+    
     /**
      * <P>Method for ease of printing specified range of sample values/rows
      *
@@ -266,13 +274,13 @@ public class SwingTable {
 
         for(int i = indexBegin; i < indexEnd; i++){
             System.out.println();
-            System.out.print(swingSamples.get(i).getTimestamp());
-            System.out.print(", " + swingSamples.get(i).getXYZ("ax"));
-            System.out.print(", " + swingSamples.get(i).getXYZ("ay"));
-            System.out.print(", " + swingSamples.get(i).getXYZ("az"));
-            System.out.print(", " + swingSamples.get(i).getXYZ("wx"));
-            System.out.print(", " + swingSamples.get(i).getXYZ("wy"));
-            System.out.print(", " + swingSamples.get(i).getXYZ("wz"));
+            System.out.print(swingSamples.get(i).getXYZ(SwingSample.column.TIMESTAMP));
+            System.out.print(", " + swingSamples.get(i).getXYZ(SwingSample.column.AX));
+            System.out.print(", " + swingSamples.get(i).getXYZ(SwingSample.column.AY));
+            System.out.print(", " + swingSamples.get(i).getXYZ(SwingSample.column.AZ));
+            System.out.print(", " + swingSamples.get(i).getXYZ(SwingSample.column.WX));
+            System.out.print(", " + swingSamples.get(i).getXYZ(SwingSample.column.WY));
+            System.out.print(", " + swingSamples.get(i).getXYZ(SwingSample.column.WZ));
         }
     }
 
