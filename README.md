@@ -1,6 +1,6 @@
 # DKSwing
 
-Problem Set for Diamond Kinetics:
+Problem Set for Diamond Kinetics Software Engineering Inernship:
  -Implement data structure for sample swing data in 'latestSwing.csv'
  -Implement 4 methods for searching continuous values
 
