@@ -13,7 +13,7 @@ Problem Set for Diamond Kinetics Software Engineering Inernship <br />
 **SwingSample.java**  <br />
   Object representing 1 sample (row) of 7 data points (in order)<br />
       - Timestamp, ax, ay, az, wx, wy, wz<br />
-      - Parameter is case-insensative String matching 1 of 7 data point labels<br />
+      - Parameters are of inner enum class, matching 7 data point labels<br />
       
 **IndexPair.java** <br /> 
   Object represents starting and ending index of continuous runs of values. 
