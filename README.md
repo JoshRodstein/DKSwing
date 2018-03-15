@@ -6,7 +6,7 @@ Problem Set for Diamond Kinetics Software Engineering Inernship <br />
 
 # Description:
 **SwingTable.java-** <br />
-  ArrayList<SwingSample> backed ADT, with parralel mapping of timestamps to
+  - ArrayList<SwingSample> backed ADT, with parralel mapping of timestamps to
   to corresponding ArrayList index. Makes possible O(1) search for sample 
   by timeStamp.
   
@@ -16,7 +16,7 @@ Problem Set for Diamond Kinetics Software Engineering Inernship <br />
       - Parameters are of inner enum class, matching 7 data point labels<br />
       
 **IndexPair.java** <br /> 
-  Object represents starting and ending index of continuous runs of values. 
+  - Object represents starting and ending index of continuous runs of values. 
   Allows for return of multiple indices. 
   
 
