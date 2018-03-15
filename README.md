@@ -11,8 +11,7 @@ Problem Set for Diamond Kinetics Software Engineering Inernship <br />
   by timeStamp.
   
 **SwingSample.java**  <br />
-  Object representing 1 sample (row) of 7 data points (in order)<br />
-  
+  - Object representing 1 sample (row) of 7 data points (in order)<br />
       - Timestamp, ax, ay, az, wx, wy, wz<br />
       - Parameters are of inner enum class, matching 7 data point labels<br />
       
